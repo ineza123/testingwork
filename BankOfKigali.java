@@ -4,52 +4,70 @@
  * and open the template in the editor.
  */
 
-package bankofkigali;
+package packageBk;
+
 
 import java.util.logging.Level;
-import org.eclipse.jetty.util.log.Logger;
-import static org.openqa.grid.common.SeleniumProtocol.WebDriver;
+import java.util.logging.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 
-/**
- *
- * @author HP
- */
-public class BankOfKigali {
 
-    /**
-     * @param args the command line arguments
-     */
+public class bk_testing_webpage {
+    
     public static void main(String[] args) {
-        // TODO code application logic here
-         System.getProperty("webdriver.gecko.driver","C:\\Program Files\\selenium-server-standalone\\geckodriver-v0.23.0-win64\\geckodriver.exe");
-
-        WebDriver driver = new FirefoxDriver();
-        driver.get("https://www.bk.rw");
-        WebElement link1, link2, link3, link4;
+        System.getProperty("webdriver.gecko.driver","C:\\Program Files\\selenium-server-standalone\\geckodriver-v0.23.0-win64\\geckodriver.exe");
+        WebDriver driver = new ChromeDriver();
+        Actions actions = new Actions(driver);
+        
+          driver.get("https://www.bk.rw");
+        WebElement link, table;
         //link =driver.findElement(By.linkText("personal"));
-        link1 =driver.findElement(By.xpath("//a[@href='https://www.bk.rw/personal']"));
-        link1.click();
-        link2 =driver.findElement(By.xpath("//a[@href='https://www.bk.rw/personal/checking-saving/personal-current']"));
-        link2.click();
+       
+        
+        // On top navigation Under open account section, click on"Personal account link
+        driver.findElement(By.xpath("//a[@href='https://www.bk.rw/personal/checking-saving/personal-current']")).click();    
+        driver.findElement(By.xpath("//a[@href='https://www.bk.rw/personal']")).click();
+        Float buyingPrice=Float.parseFloat(driver.findElement(By.xpath("/html/body/footer/div[1]/div[4]/div/table/tbody/tr[2]/td[2]")).getText());
+        Float sellingPrice=Float.parseFloat(driver.findElement(By.xpath("/html/body/footer/div[1]/div[4]/div/table/tbody/tr[2]/td[3]")).getText());
+        if((sellingPrice>=800) && (sellingPrice>buyingPrice)){
+            table=driver.findElement(By.xpath("//a[@href='https://www.bk.rw/online-services/apply-for-online-banking' and @class='btn btn-primary more-btn']"));
+            actions.moveToElement(table);
+            actions.perform();
+            table.isSelected();
+        } else {
+        }
+        
+        
+        driver.findElement(By.xpath("//*[@id=\"nav\"]/div/div/div[2]/ul[1]/li[2]/a")).click();
+         
+        //Click on online banking link under current  & saving menu 
+        driver.findElement(By.xpath("//a[@href='https://www.bk.rw/ways-of-banking/online-banking']")).click();
+        
+        //get a link for "Apply now button"
+        link=driver.findElement(By.xpath("//a[@href='https://www.bk.rw/online-services/apply-for-online-banking' and @class='btn btn-primary more-btn']"));
+        Actions //<editor-fold defaultstate="collapsed" desc="/*comment*/">
+                moveToElement
+//</editor-fold>
+;
+        moveToElement = actions.moveToElement(link);
+        actions.perform();
+        link.click();
+  
 
-        link3 =driver.findElement(By.xpath("//a[@href='https://www.bk.rw/ways-of-banking/online-banking']"));
-        link3.click();
-        link4=driver.findElement(By.xpath("//a[@href='https://www.bk.rw/online-services/apply-for-online-banking']"));
-        link4.click();
-     /*  try{
+      
+        try{
             Thread.sleep(5000);
             
         }catch(InterruptedException ex){               
      
  
-            Logger.getLogger(bankOfKigali.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+            Logger.getLogger(bk_testing_webpage.class.getName()).log(Level.SEVERE, null, ex);
+        }
         driver.quit();
-        
+        driver.close();
     }
-    
 }
